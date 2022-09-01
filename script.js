@@ -3,13 +3,14 @@ const colorSection = document.getElementById('color-palette').children;
 const pixelSection = document.getElementsByClassName('pixel');
 const selected = document.getElementsByClassName('selected');
 
-// Color Predefinition;
+// Color/Class Predefinition;
+colorSection[0].classList.add('selected');
 colorSection[0].style.backgroundColor = 'black';
 colorSection[1].style.backgroundColor = 'red';
 colorSection[2].style.backgroundColor = 'green';
 colorSection[3].style.backgroundColor = 'blue';
 
-let selectedColor = colorSection[0].style.backgroundColor;
+let selectedColor = selected[0].style.backgroundColor;
 
 function storageOutput() {
   if (localStorage.colorPalette) {
@@ -42,10 +43,10 @@ function randomize() {
 
 function colorSelect(event) {
   for (let i = 0; i < selected.length; i += 1) {
-    selected[i].className = 'color';
+    selected[i].classList.remove('selected');
   }
   const clickedColor = event.target;
-  clickedColor.className = 'selected';
+  clickedColor.classList.add('selected');
   selectedColor = clickedColor.style.backgroundColor;
 }
 
