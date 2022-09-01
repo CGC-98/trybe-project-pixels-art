@@ -1,8 +1,8 @@
 const btnColor = document.getElementById('button-random-color');
+const btnClear = document.getElementById('clear-board');
+const selected = document.getElementsByClassName('selected');
 const colorSection = document.getElementById('color-palette').children;
 const pixelSection = document.getElementsByClassName('pixel');
-const selected = document.getElementsByClassName('selected');
-const btnClear = document.getElementById('clear-board');
 
 // Class/Color Predefinition;
 colorSection[0].classList.add('selected');
@@ -13,18 +13,40 @@ colorSection[3].style.backgroundColor = 'blue';
 
 let selectedColor = selected[0].style.backgroundColor;
 
-function storageOutput() {
+function storageInPalette(colorArray) {
+  localStorage.setItem('colorPalette', JSON.stringify(colorArray));
+}
+
+function storageOutPalette() {
   if (localStorage.colorPalette) {
-    const colorReturn = JSON.parse(localStorage.getItem('colorPalette'));
-    for (let i = 1; i <= colorReturn.length; i += 1) {
-      colorSection[i].style.backgroundColor = colorReturn[i - 1];
+    const paletteReturn = JSON.parse(localStorage.getItem('colorPalette'));
+    for (let i = 1; i <= paletteReturn.length; i += 1) {
+      colorSection[i].style.backgroundColor = paletteReturn[i - 1];
+    }
+  }
+}
+
+function storageInBoard() {
+  const boardArray = [];
+  for (let i = 0; i < pixelSection.length; i += 1) {
+    boardArray.push(pixelSection[i].style.backgroundColor);
+  }
+  localStorage.setItem('pixelBoard', JSON.stringify(boardArray));
+}
+
+function storageOutBoard() {
+  if (localStorage.pixelBoard) {
+    const boardReturn = JSON.parse(localStorage.getItem('pixelBoard'));
+    for (let i = 0; i < boardReturn.length; i += 1) {
+      pixelSection[i].style.backgroundColor = boardReturn[i];
     }
   }
 }
 
 function onLoad() {
   if (Storage) {
-    storageOutput();
+    storageOutPalette();
+    storageOutBoard();
   } else {
     document.write('Sem suporte para Web Storage');
   }
@@ -39,7 +61,7 @@ function randomize() {
     colorSection[i].style.backgroundColor = colorOutput;
     colorArray.push(colorOutput);
   }
-  localStorage.setItem('colorPalette', JSON.stringify(colorArray));
+  storageInPalette(colorArray);
 }
 
 function colorSelect(event) {
@@ -54,6 +76,7 @@ function colorSelect(event) {
 function colorDrop(event) {
   const clickedPixel = event.target;
   clickedPixel.style.backgroundColor = selectedColor;
+  storageInBoard();
 }
 
 function pixelClear() {
