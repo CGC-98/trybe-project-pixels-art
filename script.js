@@ -11,7 +11,6 @@ colorSection[3].style.backgroundColor = 'blue';
 
 let selectedColor = colorSection[0].style.backgroundColor;
 
-// Generate Random Color from CSS-TRICKS
 function storageOutput() {
   if (localStorage.colorPalette) {
     const colorReturn = JSON.parse(localStorage.getItem('colorPalette'));
@@ -21,6 +20,15 @@ function storageOutput() {
   }
 }
 
+function onLoad() {
+  if (Storage) {
+    storageOutput();
+  } else {
+    document.write('Sem suporte para Web Storage');
+  }
+}
+
+// Generate Random Color from CSS-TRICKS
 function randomize() {
   const colorArray = [];
   for (let i = 1; i < colorSection.length - 1; i += 1) {
@@ -43,18 +51,13 @@ function colorSelect(event) {
 
 function colorDrop(event) {
   const clickedPixel = event.target;
+  // console.log(colorSection[0].style.backgroundColor);
   clickedPixel.style.backgroundColor = selectedColor;
+  // console.log(clickedPixel.style.backgroundColor);
 }
 
 // Listeners;
-window.onload = function onload() {
-  if (Storage) {
-    storageOutput();
-  } else {
-    document.write('Sem suporte para Web Storage');
-  }
-  // colorSection[0].className = 'selected';
-};
+window.addEventListener('load', onLoad);
 
 btnColor.addEventListener('click', randomize);
 
