@@ -2,8 +2,9 @@ const btnColor = document.getElementById('button-random-color');
 const colorSection = document.getElementById('color-palette').children;
 const pixelSection = document.getElementsByClassName('pixel');
 const selected = document.getElementsByClassName('selected');
+const btnClear = document.getElementById('clear-board');
 
-// Color/Class Predefinition;
+// Class/Color Predefinition;
 colorSection[0].classList.add('selected');
 colorSection[0].style.backgroundColor = 'black';
 colorSection[1].style.backgroundColor = 'red';
@@ -52,15 +53,21 @@ function colorSelect(event) {
 
 function colorDrop(event) {
   const clickedPixel = event.target;
-  // console.log(colorSection[0].style.backgroundColor);
   clickedPixel.style.backgroundColor = selectedColor;
-  // console.log(clickedPixel.style.backgroundColor);
+}
+
+function pixelClear() {
+  for (let i = 0; i < pixelSection.length; i += 1) {
+    pixelSection[i].style.backgroundColor = 'white';
+  }
 }
 
 // Listeners;
 window.addEventListener('load', onLoad);
 
 btnColor.addEventListener('click', randomize);
+
+btnClear.addEventListener('click', pixelClear);
 
 for (let i = 0; i < colorSection.length - 1; i += 1) {
   colorSection[i].addEventListener('click', colorSelect);
