@@ -1,5 +1,7 @@
 const btnColor = document.getElementById('button-random-color');
 const colorSection = document.querySelector('#color-palette').children;
+const lineCounter = document.getElementsByClassName('boxLine');
+console.log(lineCounter);
 
 // Generate Random Color from CSS-TRICKS
 function attribute() {
@@ -32,3 +34,10 @@ window.onload = function onload() {
 
 // Listeners;
 btnColor.addEventListener('click', attribute);
+
+// PROGRESS;
+// for (let i = 0; i < lineCounter.length; i += 1) {
+//   for (let j = 0; i < 5; j += 1) {
+//     let perLine = lineCounter[i];
+//   }
+// }
