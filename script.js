@@ -20,15 +20,7 @@ baselineColor();
 let selectedColor = selected[0].style.backgroundColor;
 
 // Dependent Functions;
-// function inAxis() {
-
-// }
-
-// function outAxis() {
-
-// }
-
-function storageInBoard() {
+function storageInArt() {
   const boardArray = [];
   for (let i = 0; i < pixelSection.length; i += 1) {
     boardArray.push(pixelSection[i].style.backgroundColor);
@@ -36,11 +28,11 @@ function storageInBoard() {
   localStorage.setItem('pixelBoard', JSON.stringify(boardArray));
 }
 
-function storageOutBoard() {
+function storageOutArt() {
   if (localStorage.pixelBoard) {
-    const boardReturn = JSON.parse(localStorage.getItem('pixelBoard'));
-    for (let i = 0; i < boardReturn.length; i += 1) {
-      pixelSection[i].style.backgroundColor = boardReturn[i];
+    const artReturn = JSON.parse(localStorage.getItem('pixelBoard'));
+    for (let i = 0; i < artReturn.length; i += 1) {
+      pixelSection[i].style.backgroundColor = artReturn[i];
     }
   }
 }
@@ -86,15 +78,18 @@ function colorPick() {
 
 function colorDrop(event) {
   const clickedPixel = event.target;
-  console.log(clickedPixel);
   clickedPixel.style.backgroundColor = selectedColor;
-  storageInBoard();
+  storageInArt();
 }
 
 function pixelClear() {
   for (let i = 0; i < pixelSection.length; i += 1) {
     pixelSection[i].style.backgroundColor = 'white';
   }
+}
+
+function storageInBoard(numSize) {
+  localStorage.setItem('boardSize', numSize);
 }
 
 function boardX(i, sizeN) {
@@ -121,21 +116,44 @@ function boardClear() {
   }
 }
 
+function boardCheck(numSize) {
+  boardClear();
+  if (numSize < 5) {
+    boardY(5);
+  } else if (numSize > 50) {
+    boardY(50);
+  } else {
+    boardY(parseFloat(numSize));
+  }
+}
+
 function boardBtn() {
   const numSize = document.getElementById('board-size').value;
-  boardClear();
-  boardY(parseFloat(numSize));
-  for (let i = 0; i < pixelSection.length; i += 1) {
-    pixelSection[i].addEventListener('click', colorDrop);
+  if (!numSize || numSize === 0) {
+    window.alert('Board inválido!');
+  } else {
+    storageInBoard(numSize);
+    boardCheck(numSize);
+    for (let i = 0; i < pixelSection.length; i += 1) {
+      pixelSection[i].addEventListener('click', colorDrop);
+    }
+  }
+}
+
+function storageOutBoard() {
+  if (localStorage.boardSize) {
+    const boardReturn = localStorage.getItem('boardSize');
+    document.getElementById('board-size').value = parseFloat(boardReturn);
   }
 }
 
 function onLoad() {
   if (Storage) {
     colorPick();
+    storageOutBoard();
     btnBoard.click();
     storageOutPalette();
-    storageOutBoard();
+    storageOutArt();
   } else {
     document.write('Sem suporte para Web Storage');
   }
