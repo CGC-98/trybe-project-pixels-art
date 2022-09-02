@@ -8,29 +8,18 @@ const lineSection = document.getElementsByClassName('boardLine');
 let pixelSection = document.getElementsByClassName('pixel');
 
 // Class/Color Predefinition;
-colorSection[0].classList.add('selected');
-colorSection[0].style.backgroundColor = 'black';
-colorSection[1].style.backgroundColor = 'red';
-colorSection[2].style.backgroundColor = 'green';
-colorSection[3].style.backgroundColor = 'blue';
-let selectedColor = selected[0].style.backgroundColor;
-
-function boardOnLoad() {
-  for (let i = 0; i < 5; i += 1) {
-    const newLine = document.createElement('div');
-    newLine.className = 'boardLine';
-    boardBox.appendChild(newLine);
-    for (let j = 0; j < 5; j += 1) {
-      const newPixel = document.createElement('span');
-      newPixel.className = 'pixel';
-      lineSection[i].appendChild(newPixel);
-    }
+function baselineColor() {
+  const baseColorArray = ['black', 'red', 'green', 'blue'];
+  colorSection[0].classList.add('selected');
+  for (let i = 0; i < baseColorArray.length; i += 1) {
+    colorSection[i].style.backgroundColor = baseColorArray[i];
   }
-  pixelSection = document.getElementsByClassName('pixel');
 }
 
-boardOnLoad();
+baselineColor();
+let selectedColor = selected[0].style.backgroundColor;
 
+// Dependent Functions;
 // function inAxis() {
 
 // }
@@ -130,14 +119,14 @@ function boardBtn() {
   const numSize = document.getElementById('board-size').value;
   boardClear();
   boardY(parseFloat(numSize));
+  console.log(pixelSection);
 }
 
 function onLoad() {
   if (Storage) {
-    // boardDim(5);
+    btnBoard.click();
     storageOutPalette();
     storageOutBoard();
-    // btnBoard.click();
   } else {
     document.write('Sem suporte para Web Storage');
   }
