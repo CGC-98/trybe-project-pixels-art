@@ -2,7 +2,7 @@ body {
   text-align: center;
 }
 
-#color-palette , #colorSection , .boxLine {
+#color-palette , #colorSection , .boardLine {
   display: flex;
   justify-content: center;
 }
@@ -17,8 +17,19 @@ body {
 #clear-board {
   background-color: grey;
   width: 100px;
-  margin: 15px;
+  margin: 10px;
   padding: 5px;
+}
+
+#board-size {
+  border: 5px solid grey;
+  width: 35px;
+  padding: 5px;
+}
+
+#generate-board {
+  background-color: gray;
+  height: 35px;
 }
 
 .color , .selected {
@@ -35,18 +46,6 @@ body {
   height: 40px;
 }
 
-#colorOne {
-  background-color: black;
-}
-
-#colorTwo {
-  background-color: red;
-}
-
-#colorThree {
-  background-color: green;
-}
-
-#colorFour {
-  background-color: blue;
+#n1 {
+  margin-top: 10px;
 }

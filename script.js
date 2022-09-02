@@ -1,8 +1,12 @@
 const btnColor = document.getElementById('button-random-color');
 const btnClear = document.getElementById('clear-board');
+const numSize = document.getElementById('board-size');
+const boardBox = document.getElementById('pixel-board');
 const selected = document.getElementsByClassName('selected');
 const colorSection = document.getElementById('color-palette').children;
+const lineSection = document.getElementById('boardLine');
 const pixelSection = document.getElementsByClassName('pixel');
+const genBoard = document.getElementById('generate-board');
 
 // Class/Color Predefinition;
 colorSection[0].classList.add('selected');
@@ -12,7 +16,9 @@ colorSection[2].style.backgroundColor = 'green';
 colorSection[3].style.backgroundColor = 'blue';
 
 let selectedColor = selected[0].style.backgroundColor;
+let boardSize = 5;
 
+// Generate Random Color from CSS-TRICKS
 function storageInPalette(colorArray) {
   localStorage.setItem('colorPalette', JSON.stringify(colorArray));
 }
@@ -43,16 +49,6 @@ function storageOutBoard() {
   }
 }
 
-function onLoad() {
-  if (Storage) {
-    storageOutPalette();
-    storageOutBoard();
-  } else {
-    document.write('Sem suporte para Web Storage');
-  }
-}
-
-// Generate Random Color from CSS-TRICKS
 function randomize() {
   const colorArray = [];
   for (let i = 1; i < colorSection.length - 1; i += 1) {
@@ -85,12 +81,50 @@ function pixelClear() {
   }
 }
 
+function boardX(i, sizeN) {
+  if (typeof sizeN === 'number') {
+  }
+}
+
+function boardY(event) {
+  const sizeN = parseFloat(event.target.value);
+  if (typeof sizeN === 'number') {
+    for (let i = 1; i <= sizeN; i += 1) {
+      const newLine = document.createElement('div');
+      newLine.className = 'boardLine';
+      boardBox.appendChild(newLine);
+      // boardX(i, sizeN);
+      for (let j = 1; j <= sizeN; j += 1) {
+        const newPixel = document.createElement('span');
+        newPixel.className = 'pixel';
+        lineSection[i].appendChild(newPixel);
+      }
+    }
+  }
+}
+
+function boardDim(event) {
+  boardY(event);
+}
+
+function onLoad() {
+  if (Storage) {
+    // boardDim('5');
+    // storageOutPalette();
+    // storageOutBoard();
+  } else {
+    document.write('Sem suporte para Web Storage');
+  }
+}
+
 // Listeners;
 window.addEventListener('load', onLoad);
 
 btnColor.addEventListener('click', randomize);
 
 btnClear.addEventListener('click', pixelClear);
+
+numSize.addEventListener('input', boardDim);
 
 for (let i = 0; i < colorSection.length - 1; i += 1) {
   colorSection[i].addEventListener('click', colorSelect);
