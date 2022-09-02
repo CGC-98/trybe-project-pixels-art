@@ -78,6 +78,12 @@ function colorSelect(event) {
   selectedColor = clickedColor.style.backgroundColor;
 }
 
+function colorPick() {
+  for (let i = 0; i < colorSection.length - 1; i += 1) {
+    colorSection[i].addEventListener('click', colorSelect);
+  }
+}
+
 function colorDrop(event) {
   const clickedPixel = event.target;
   console.log(clickedPixel);
@@ -119,11 +125,14 @@ function boardBtn() {
   const numSize = document.getElementById('board-size').value;
   boardClear();
   boardY(parseFloat(numSize));
-  console.log(pixelSection);
+  for (let i = 0; i < pixelSection.length; i += 1) {
+    pixelSection[i].addEventListener('click', colorDrop);
+  }
 }
 
 function onLoad() {
   if (Storage) {
+    colorPick();
     btnBoard.click();
     storageOutPalette();
     storageOutBoard();
@@ -137,11 +146,3 @@ window.addEventListener('load', onLoad);
 btnColor.addEventListener('click', randomize);
 btnClear.addEventListener('click', pixelClear);
 btnBoard.addEventListener('click', boardBtn);
-
-for (let i = 0; i < colorSection.length - 1; i += 1) {
-  colorSection[i].addEventListener('click', colorSelect);
-}
-
-for (let i = 0; i < pixelSection.length; i += 1) {
-  pixelSection[i].addEventListener('click', colorDrop);
-}
