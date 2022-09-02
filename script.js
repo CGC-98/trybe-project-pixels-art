@@ -120,20 +120,22 @@ function boardCheck(numSize) {
   boardClear();
   if (numSize < 5) {
     boardY(5);
+    storageInBoard(5);
   } else if (numSize > 50) {
     boardY(50);
+    storageInBoard(50);
   } else {
-    boardY(parseFloat(numSize));
+    boardY(numSize);
+    storageInBoard(numSize);
   }
 }
 
 function boardBtn() {
   const numSize = document.getElementById('board-size').value;
-  if (!numSize || numSize === 0) {
-    window.alert('Board inválido!');
+  if (!numSize) {
+    alert('Board inválido!');
   } else {
-    storageInBoard(numSize);
-    boardCheck(numSize);
+    boardCheck(parseFloat(numSize));
     for (let i = 0; i < pixelSection.length; i += 1) {
       pixelSection[i].addEventListener('click', colorDrop);
     }
@@ -155,7 +157,7 @@ function onLoad() {
     storageOutPalette();
     storageOutArt();
   } else {
-    document.write('Sem suporte para Web Storage');
+    alert('Incompatível com Web Storage');
   }
 }
 
