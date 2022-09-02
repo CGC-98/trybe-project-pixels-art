@@ -1,12 +1,11 @@
 const btnColor = document.getElementById('button-random-color');
 const btnClear = document.getElementById('clear-board');
-const numSize = document.getElementById('board-size');
+const btnBoard = document.getElementById('generate-board');
 const boardBox = document.getElementById('pixel-board');
 const selected = document.getElementsByClassName('selected');
 const colorSection = document.getElementById('color-palette').children;
-const lineSection = document.getElementById('boardLine');
-const pixelSection = document.getElementsByClassName('pixel');
-const genBoard = document.getElementById('generate-board');
+const lineSection = document.getElementsByClassName('boardLine');
+let pixelSection = document.getElementsByClassName('pixel');
 
 // Class/Color Predefinition;
 colorSection[0].classList.add('selected');
@@ -14,23 +13,31 @@ colorSection[0].style.backgroundColor = 'black';
 colorSection[1].style.backgroundColor = 'red';
 colorSection[2].style.backgroundColor = 'green';
 colorSection[3].style.backgroundColor = 'blue';
-
 let selectedColor = selected[0].style.backgroundColor;
-let boardSize = 5;
 
-// Generate Random Color from CSS-TRICKS
-function storageInPalette(colorArray) {
-  localStorage.setItem('colorPalette', JSON.stringify(colorArray));
-}
-
-function storageOutPalette() {
-  if (localStorage.colorPalette) {
-    const paletteReturn = JSON.parse(localStorage.getItem('colorPalette'));
-    for (let i = 1; i <= paletteReturn.length; i += 1) {
-      colorSection[i].style.backgroundColor = paletteReturn[i - 1];
+function boardOnLoad() {
+  for (let i = 0; i < 5; i += 1) {
+    const newLine = document.createElement('div');
+    newLine.className = 'boardLine';
+    boardBox.appendChild(newLine);
+    for (let j = 0; j < 5; j += 1) {
+      const newPixel = document.createElement('span');
+      newPixel.className = 'pixel';
+      lineSection[i].appendChild(newPixel);
     }
   }
+  pixelSection = document.getElementsByClassName('pixel');
 }
+
+boardOnLoad();
+
+// function inAxis() {
+
+// }
+
+// function outAxis() {
+
+// }
 
 function storageInBoard() {
   const boardArray = [];
@@ -45,6 +52,19 @@ function storageOutBoard() {
     const boardReturn = JSON.parse(localStorage.getItem('pixelBoard'));
     for (let i = 0; i < boardReturn.length; i += 1) {
       pixelSection[i].style.backgroundColor = boardReturn[i];
+    }
+  }
+}
+
+function storageInPalette(colorArray) {
+  localStorage.setItem('colorPalette', JSON.stringify(colorArray));
+}
+
+function storageOutPalette() {
+  if (localStorage.colorPalette) {
+    const paletteReturn = JSON.parse(localStorage.getItem('colorPalette'));
+    for (let i = 1; i <= paletteReturn.length; i += 1) {
+      colorSection[i].style.backgroundColor = paletteReturn[i - 1];
     }
   }
 }
@@ -71,6 +91,7 @@ function colorSelect(event) {
 
 function colorDrop(event) {
   const clickedPixel = event.target;
+  console.log(clickedPixel);
   clickedPixel.style.backgroundColor = selectedColor;
   storageInBoard();
 }
@@ -82,36 +103,41 @@ function pixelClear() {
 }
 
 function boardX(i, sizeN) {
-  if (typeof sizeN === 'number') {
+  for (let j = 0; j < sizeN; j += 1) {
+    const newPixel = document.createElement('span');
+    newPixel.className = 'pixel';
+    lineSection[i].appendChild(newPixel);
+  }
+  pixelSection = document.getElementsByClassName('pixel');
+}
+
+function boardY(sizeN) {
+  for (let i = 0; i < sizeN; i += 1) {
+    const newLine = document.createElement('div');
+    newLine.className = 'boardLine';
+    boardBox.appendChild(newLine);
+    boardX(i, sizeN);
   }
 }
 
-function boardY(event) {
-  const sizeN = parseFloat(event.target.value);
-  if (typeof sizeN === 'number') {
-    for (let i = 1; i <= sizeN; i += 1) {
-      const newLine = document.createElement('div');
-      newLine.className = 'boardLine';
-      boardBox.appendChild(newLine);
-      // boardX(i, sizeN);
-      for (let j = 1; j <= sizeN; j += 1) {
-        const newPixel = document.createElement('span');
-        newPixel.className = 'pixel';
-        lineSection[i].appendChild(newPixel);
-      }
-    }
+function boardClear() {
+  while (boardBox.hasChildNodes()) {
+    boardBox.removeChild(boardBox.firstChild);
   }
 }
 
-function boardDim(event) {
-  boardY(event);
+function boardBtn() {
+  const numSize = document.getElementById('board-size').value;
+  boardClear();
+  boardY(parseFloat(numSize));
 }
 
 function onLoad() {
   if (Storage) {
-    // boardDim('5');
-    // storageOutPalette();
-    // storageOutBoard();
+    // boardDim(5);
+    storageOutPalette();
+    storageOutBoard();
+    // btnBoard.click();
   } else {
     document.write('Sem suporte para Web Storage');
   }
@@ -119,12 +145,9 @@ function onLoad() {
 
 // Listeners;
 window.addEventListener('load', onLoad);
-
 btnColor.addEventListener('click', randomize);
-
 btnClear.addEventListener('click', pixelClear);
-
-numSize.addEventListener('input', boardDim);
+btnBoard.addEventListener('click', boardBtn);
 
 for (let i = 0; i < colorSection.length - 1; i += 1) {
   colorSection[i].addEventListener('click', colorSelect);
