@@ -92,6 +92,12 @@ function storageInBoard(numSize) {
   localStorage.setItem('boardSize', numSize);
 }
 
+function palitoBaleia() {
+  for (let i = 0; i < pixelSection.length; i += 1) {
+    pixelSection[i].addEventListener('click', colorDrop);
+  }
+}
+
 function boardX(i, sizeN) {
   for (let j = 0; j < sizeN; j += 1) {
     const newPixel = document.createElement('span');
@@ -108,6 +114,7 @@ function boardY(sizeN) {
     boardBox.appendChild(newLine);
     boardX(i, sizeN);
   }
+  palitoBaleia();
 }
 
 function boardClear() {
@@ -120,13 +127,10 @@ function boardCheck(numSize) {
   boardClear();
   if (numSize < 5) {
     boardY(5);
-    storageInBoard(5);
   } else if (numSize > 50) {
     boardY(50);
-    storageInBoard(50);
   } else {
-    boardY(numSize);
-    storageInBoard(numSize);
+    boardY(parseFloat(numSize));
   }
 }
 
@@ -135,17 +139,18 @@ function boardBtn() {
   if (!numSize) {
     alert('Board inválido!');
   } else {
-    boardCheck(parseFloat(numSize));
-    for (let i = 0; i < pixelSection.length; i += 1) {
-      pixelSection[i].addEventListener('click', colorDrop);
-    }
+    storageInBoard(numSize);
+    boardCheck(numSize);
   }
 }
 
 function storageOutBoard() {
   if (localStorage.boardSize) {
     const boardReturn = localStorage.getItem('boardSize');
+    boardY(parseFloat(boardReturn));
     document.getElementById('board-size').value = parseFloat(boardReturn);
+  } else {
+    boardY(5);
   }
 }
 
@@ -153,11 +158,10 @@ function onLoad() {
   if (Storage) {
     colorPick();
     storageOutBoard();
-    btnBoard.click();
     storageOutPalette();
     storageOutArt();
   } else {
-    alert('Incompatível com Web Storage');
+    document.write('Sem suporte para Web Storage');
   }
 }
 
